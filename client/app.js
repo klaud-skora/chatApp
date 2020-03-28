@@ -7,6 +7,11 @@ const messageContentInput = document.getElementById('message-content');
 
 let userName;
 
+const socket = io({
+  autoConnect: false
+});
+socket.on('message', ({author, content}) => addMessage(author, content));
+
 function login(e) {
   e.preventDefault();
   if(userNameInput.value == '') {
@@ -34,16 +39,19 @@ function addMessage(author, content) {
   `;
 
   messagesList.appendChild(message);
-  messageContentInput.value = '';
 }
 
 function sendMessage(e) {
   e.preventDefault();
-  if(messageContentInput.value == '') {
+
+  let messageContent = messageContentInput.value;
+  if(messageContent == '') {
     return alert('Error: Message is empty.');
   }
 
-  addMessage(userName, messageContentInput.value);
+  addMessage(userName, messageContent);
+  socket.emit('message', {author: userName, content: messageContent});
+  messageContentInput.value = '';
 }
 
 /* Action listeners */
@@ -54,3 +62,4 @@ loginForm.addEventListener('submit', function(e) {
 addMessageForm.addEventListener('submit', function(e) {
   sendMessage(e);
 })
+
