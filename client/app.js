@@ -34,6 +34,7 @@ function addMessage(author, content) {
   `;
 
   messagesList.appendChild(message);
+  messageContentInput.value = '';
 }
 
 function sendMessage(e) {
