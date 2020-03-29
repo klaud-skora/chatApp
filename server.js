@@ -20,9 +20,13 @@ const io = socket(server);
 
 io.on('connection', (socket) => {
   console.log('New client! Its id – ' + socket.id);
+
+  let author;
+
   socket.on('login', userName => { 
-    users.push({author: userName, id: socket.id});
-    socket.broadcast.emit('message', ); 
+    author = userName;
+    users.push({author: author, id: socket.id});
+    socket.broadcast.emit('message', {author: 'Chat Bot', content: `${author} has joined the conversation!`});
   });
   
   socket.on('message', (message) => { 
@@ -36,5 +40,6 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     users = users.filter(user => (user.id !== socket.id));
     console.log('Oh, socket ' + socket.id + ' has left.')
+    socket.broadcast.emit('message', {author: 'Chat Bot', content: `${author} has left the conversation... :(`});
   });
 });

@@ -25,9 +25,11 @@ function addMessage(author, content) {
   const message = document.createElement('li');
   message.classList.add('message');
   message.classList.add('message--received');
-
+  
   if(author === userName) {
     message.classList.add('message--self');
+  } else if(author === 'Chat Bot') {
+    message.classList.add('message--bot');
   }
 
   message.innerHTML = `
