@@ -7,9 +7,7 @@ const messageContentInput = document.getElementById('message-content');
 
 let userName;
 
-const socket = io({
-  autoConnect: false
-});
+const socket = io();
 socket.on('message', ({author, content}) => addMessage(author, content));
 
 function login(e) {
